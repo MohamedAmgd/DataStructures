@@ -3,7 +3,6 @@
  */
 public class LinkedList<T> {
     private Node<T> startNode = null;
-    private int size = 0;
 
     public LinkedList() {
     }
@@ -14,29 +13,6 @@ public class LinkedList<T> {
 
     private void init(T value) {
         setStartNode(new Node<T>(value));
-        incSize();
-    }
-
-    /**
-     * @return the size
-     */
-    public int getSize() {
-        return size;
-    }
-
-    /**
-     * @param size the size to set
-     */
-    private void setSize(int size) {
-        this.size = size;
-    }
-
-    private void incSize() {
-        setSize(this.size + 1);
-    }
-
-    private void decSize() {
-        setSize(this.size - 1);
     }
 
     /**
@@ -51,6 +27,45 @@ public class LinkedList<T> {
      */
     private void setStartNode(Node<T> startNode) {
         this.startNode = startNode;
+    }
+
+    /**
+     * @return the size
+     */
+    public int getSize() {
+        int size = 0;
+        Node<T> currentNode = getStartNode();
+        while (currentNode != null) {
+            size++;
+            currentNode = currentNode.getNextNode();
+        }
+        return size;
+    }
+
+    /**
+     * Returns the node at the position
+     * 
+     * @return the Node
+     * @param pos the position
+     */
+    private Node<T> getNodeByPos(int pos) {
+        if (pos < getSize() && pos >= 0) {
+            Node<T> currentNode = getStartNode();
+            for (int i = 0; i < pos; i++) {
+                currentNode = currentNode.getNextNode();
+            }
+            return currentNode;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the node at the last position
+     * 
+     * @return the Node
+     */
+    private Node<T> getLastNode() {
+        return getNodeByPos(getSize() - 1);
     }
 
     public boolean isEmpty() {
@@ -82,7 +97,6 @@ public class LinkedList<T> {
                 Node<T> newNode = new Node<T>(value);
                 Node<T> endNode = getLastNode();
                 endNode.setNextNode(newNode);
-                incSize();
             }
         }
     }
@@ -91,9 +105,6 @@ public class LinkedList<T> {
         LinkedList<T> newList = new LinkedList<T>(values);
         newList.getLastNode().setNextNode(getStartNode());
         setStartNode(newList.getStartNode());
-        for (T e : values) {
-            incSize();
-        }
     }
 
     public void insertPos(int pos, T... values) {
@@ -108,9 +119,6 @@ public class LinkedList<T> {
         LinkedList<T> tmpList = new LinkedList<T>(values);
         tmpList.getLastNode().setNextNode(getNodeByPos(pos));
         getNodeByPos(pos - 1).setNextNode(tmpList.getStartNode());
-        for (T e : values) {
-            incSize();
-        }
     }
 
     public void update(T oldValue, T newValue) {
@@ -151,23 +159,7 @@ public class LinkedList<T> {
         }
         T deletedData = nodeToBeDeleted.getData();
         nodeToBeDeleted = null;
-        decSize();
         return deletedData;
-    }
-
-    private Node<T> getNodeByPos(int pos) {
-        if (pos < getSize() && pos >= 0) {
-            Node<T> currentNode = getStartNode();
-            for (int i = 0; i < pos; i++) {
-                currentNode = currentNode.getNextNode();
-            }
-            return currentNode;
-        }
-        return null;
-    }
-
-    private Node<T> getLastNode() {
-        return getNodeByPos(getSize() - 1);
     }
 
     @Override
@@ -185,7 +177,7 @@ public class LinkedList<T> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + size;
+        result = prime * result + getSize();
         result = prime * result + ((startNode == null) ? 0 : startNode.hashCode());
         return result;
     }
@@ -199,7 +191,7 @@ public class LinkedList<T> {
         if (getClass() != obj.getClass())
             return false;
         LinkedList other = (LinkedList) obj;
-        if (size != other.size)
+        if (getSize() != other.getSize())
             return false;
         if (startNode == null) {
             if (other.startNode != null)
