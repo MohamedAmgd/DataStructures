@@ -9,6 +9,7 @@ public class test {
         System.out.println("===========================");
         testStack();
         System.out.println("\n===========================");
+        testBinarySearchTree();
     }
 
     static void testLinkedList() {
@@ -73,5 +74,15 @@ public class test {
         for (int i = 0; i < size2; i++) {
             System.out.print(stack2.pop() + " ");
         }
+    }
+
+    static void testBinarySearchTree() {
+        BinarySearchTree<Integer> bTree = new BinarySearchTree<>(5, 3, 7, 2, 4, 6, 9, 1, 8, 10);
+        System.out.println(bTree.findMax() + " " + bTree.findMin());
+        System.out.println(bTree.inOrder());
+        System.out.println(bTree.preOrder());
+        System.out.println(bTree.postOrder());
+
+        System.out.println(bTree.findItemPath(5));
     }
 }
